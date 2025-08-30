@@ -20,7 +20,7 @@ const LandingPage = () => {
       {/* Hero */}
       <section className="hero">
         <div className="hero-inner">
-          <h1 className="h1">StudyBuddy</h1>
+          <h1 className="h1">LearnSphere</h1>
           <p className="sub">
             Your personalized companion for focused learning, quick summaries,
             and instant answers — without the clutter.
