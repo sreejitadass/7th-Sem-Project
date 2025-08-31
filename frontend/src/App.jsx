@@ -5,8 +5,11 @@ import LandingPage from "./pages/LandingPage.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import About from "./pages/About.jsx";
+import Upload from "./pages/Upload.jsx";
 import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/clerk-react";
 import { SignInPage, SignUpPage } from "./pages/AuthPages.jsx";
+import { Navigate } from "react-router-dom";
 
 const Protect = ({ children }) => {
   const { isSignedIn } = useAuth();
@@ -28,8 +31,17 @@ function App() {
             </Protect>
           }
         />
+        <Route
+          path="/upload"
+          element={
+            <Protect>
+              <Upload />
+            </Protect>
+          }
+        />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </>
   );

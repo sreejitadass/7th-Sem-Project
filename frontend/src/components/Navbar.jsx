@@ -33,7 +33,7 @@ const Navbar = () => {
           <NavLink to="/pricing" className="nav-link" onClick={close}>
             Pricing
           </NavLink>
-          <NavLink to="/upload-documents" className="nav-link" onClick={close}>
+          <NavLink to="/upload" className="nav-link" onClick={close}>
             Upload
           </NavLink>
           <NavLink to="/about" className="nav-link" onClick={close}>

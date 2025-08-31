@@ -1,6 +1,7 @@
 // Dashboard.jsx
 import React from "react";
 import { FaBookOpen, FaClock, FaBolt, FaCheckCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Stat = ({ icon, label, value, hint }) => (
   <div className="dash-card stat">
@@ -32,7 +33,9 @@ const Dashboard = () => {
           </p>
         </div>
         <div className="dash-head-actions">
-          <button className="btn ghost">New upload</button>
+          <Link to="/upload" className="btn ghost">
+            New upload
+          </Link>
           <button className="btn primary">Quick review</button>
         </div>
       </header>
