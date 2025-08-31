@@ -616,6 +616,24 @@ summary:focus-visible {
   border-radius: 1px;
 }
 
+.nav-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--text, #e6e7ee);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.btn.ghost:hover {
+  border-color: #ffffff28;
+  opacity: 0.9;
+}
+
 /* Responsive layout */
 @media (max-width: 900px) {
   .nav-toggle {
@@ -654,4 +672,271 @@ summary:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 3px;
   box-shadow: 0 0 0 6px rgba(167, 139, 250, 0.35);
+}
+
+/* Auth page backdrop and centering (under sticky navbar ~64px) */
+.auth.auth--center {
+  min-height: calc(100vh - 64px);
+  padding: clamp(1.5rem, 3vw, 2.5rem) 1rem;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(
+    160deg,
+    var(--bg-start, #0f1027),
+    var(--bg-end, #1a1440)
+  );
+  color: var(--text, #e6e7ee);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Ambient radial glow centered to viewport */
+.auth.auth--center::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(1100px, 92vw);
+  height: 55vh;
+  transform: translateY(-8%);
+  background: radial-gradient(
+    50% 60% at 50% 40%,
+    rgba(139, 92, 246, 0.22),
+    transparent 65%
+  );
+  filter: blur(60px);
+  z-index: -1;
+}
+
+/* Clamp Clerk container width and center horizontally */
+.cl-rootBox {
+  width: 100% !important;
+  max-width: 560px !important;
+  margin: 0 auto !important;
+}
+
+/* Keep Clerk’s native dark card/background.
+   Do NOT override .cl-card background unless a custom glass look is desired. */
+
+/* Improve readability on dark: labels, inputs, placeholders */
+.cl-label {
+  color: #eceef6 !important;
+}
+.cl-input {
+  color: #f3f4fa !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+.cl-input::placeholder {
+  color: #c9cbe0 !important;
+}
+.cl-header {
+  margin-bottom: 0.75rem !important;
+}
+.cl-footer {
+  margin-top: 0.75rem !important;
+}
+
+/* Links inside Clerk forms */
+.auth a,
+.cl-link {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Optional: small device tweaks */
+@media (max-width: 420px) {
+  .cl-rootBox {
+    max-width: 94vw !important;
+  }
+}
+
+/* Dashboard */
+.dashboard {
+  min-height: 100vh;
+  padding: 2rem 1.25rem 3rem;
+  background: linear-gradient(
+    160deg,
+    var(--bg-start, #0f1027),
+    var(--bg-end, #1a1440)
+  );
+  color: var(--text, #e6e7ee);
+  position: relative;
+  isolation: isolate;
+}
+.dashboard::before {
+  content: "";
+  position: absolute;
+  inset: -15% -10% auto -10%;
+  height: 45%;
+  background: radial-gradient(
+    60% 60% at 50% 40%,
+    rgba(139, 92, 246, 0.22),
+    transparent 60%
+  );
+  filter: blur(60px);
+  z-index: -1;
+}
+
+/* Header */
+.dash-head {
+  max-width: 1200px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.dash-head .h2 {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  margin: 0 0 0.25rem;
+  background: linear-gradient(90deg, #fff, #dfe2f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dash-head .sub {
+  margin: 0.1rem 0 0;
+}
+.dash-head-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Stat cards */
+.dash-stats {
+  max-width: 1200px;
+  margin: 0 auto 1rem;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.dash-card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.03)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+.stat .stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stat .stat-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, #fff, #dfe2f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stat-label {
+  color: var(--muted, #b8bbce);
+  margin: 0.35rem 0 0;
+  font-weight: 600;
+}
+.stat-hint {
+  color: var(--muted, #b8bbce);
+  font-size: 0.9rem;
+}
+
+/* Main grid */
+.dash-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(12, 1fr);
+}
+.dash-card.wide {
+  grid-column: span 12;
+}
+.dash-grid > .dash-card:not(.wide) {
+  grid-column: span 6;
+}
+@media (max-width: 900px) {
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+  .dash-grid > .dash-card:not(.wide) {
+    grid-column: auto;
+  }
+}
+
+/* Chart placeholder */
+.chart-placeholder {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  height: 160px;
+  margin-top: 0.75rem;
+}
+.chart-placeholder .bar {
+  flex: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(167, 139, 250, 0.6),
+    rgba(167, 139, 250, 0.15)
+  );
+  border-radius: 8px;
+}
+.chart-placeholder .b1 {
+  height: 35%;
+}
+.chart-placeholder .b2 {
+  height: 65%;
+}
+.chart-placeholder .b3 {
+  height: 45%;
+}
+.chart-placeholder .b4 {
+  height: 80%;
+}
+.chart-placeholder .b5 {
+  height: 50%;
+}
+.chart-placeholder .b6 {
+  height: 70%;
+}
+.chart-placeholder .b7 {
+  height: 40%;
+}
+
+/* Lists and buttons */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.item-title {
+  font-weight: 600;
+}
+.item-meta {
+  color: var(--muted, #b8bbce);
+  font-size: 0.9rem;
+}
+.mini-list {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.inline-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* Small button size */
+.btn.small {
+  padding: 0.55rem 0.8rem;
+  border-radius: 10px;
+  font-weight: 700;
 }

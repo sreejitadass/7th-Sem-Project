@@ -10,10 +10,25 @@ import {
   FaCalendarAlt,
   FaStickyNote,
 } from "react-icons/fa";
-import "/Users/sreejitadas/7th-Sem-Project/frontend/index.css";
+
+const Feature = ({ icon, title, text }) => (
+  <div className="card">
+    <div className="icn">{icon}</div>
+    <h3 className="t3">{title}</h3>
+    <p className="p">{text}</p>
+  </div>
+);
 
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  const goDashboard = () => {
+    // If integrating Clerk:
+    // const { isSignedIn } = useAuth();
+    // if (isSignedIn) navigate("/dashboard");
+    // else navigate("/sign-up?redirect_url=/dashboard");
+    navigate("/dashboard");
+  };
 
   return (
     <div className="lp">
@@ -26,10 +41,7 @@ const LandingPage = () => {
             and instant answers — without the clutter.
           </p>
           <div className="cta-row">
-            <button
-              className="btn primary"
-              onClick={() => navigate("/dashboard")}
-            >
+            <button className="btn primary" onClick={goDashboard}>
               Dive into learning
             </button>
             <button className="btn ghost" onClick={() => navigate("/pricing")}>
@@ -101,13 +113,5 @@ const LandingPage = () => {
     </div>
   );
 };
-
-const Feature = ({ icon, title, text }) => (
-  <div className="card">
-    <div className="icn">{icon}</div>
-    <h3 className="t3">{title}</h3>
-    <p className="p">{text}</p>
-  </div>
-);
 
 export default LandingPage;

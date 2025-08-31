@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -11,7 +12,7 @@ const Navbar = () => {
       <div className="nav-inner">
         <Link to="/" className="brand" onClick={close}>
           <span className="logo-dot" />
-          StudyBuddy
+          LearnSphere
         </Link>
 
         <button
@@ -40,9 +41,18 @@ const Navbar = () => {
           </NavLink>
 
           <div className="nav-cta">
-            <Link to="/signup" className="btn small primary" onClick={close}>
-              Get started
-            </Link>
+            <SignedOut>
+              <Link to="/sign-up" className="btn small primary" onClick={close}>
+                Get started
+              </Link>
+            </SignedOut>
+
+            <SignedIn>
+              <UserButton
+                afterSignOutUrl="/sign-in"
+                appearance={{ elements: { avatarBox: "nav-avatar" } }}
+              />
+            </SignedIn>
           </div>
         </nav>
       </div>
