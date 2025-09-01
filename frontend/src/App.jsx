@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import About from "./pages/About.jsx";
 import Upload from "./pages/Upload.jsx";
+import ChatWidget from "./pages/ChatWidget.jsx";
 import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/clerk-react";
 import { SignInPage, SignUpPage } from "./pages/AuthPages.jsx";
 import { Navigate } from "react-router-dom";
@@ -20,6 +21,9 @@ function App() {
   return (
     <>
       <Navbar />
+      <SignedIn>
+        <ChatWidget chatbotId={import.meta.env.VITE_CHATBASE_BOT_ID} />
+      </SignedIn>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/pricing" element={<Pricing />} />
