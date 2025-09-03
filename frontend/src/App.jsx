@@ -1,4 +1,5 @@
-// src/App.jsx
+// App.jsx (root directory) - No major changes needed, but ensuring consistency
+
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage.jsx";
@@ -8,6 +9,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import About from "./pages/About.jsx";
 import Upload from "./pages/Upload.jsx";
 import ChatWidget from "./pages/ChatWidget.jsx";
+import Aiapp from "./components/Aiapp.jsx"; // Assuming this is in components, but path matches your structure
 import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/clerk-react";
 import { SignInPage, SignUpPage } from "./pages/AuthPages.jsx";
 import { Navigate } from "react-router-dom";
@@ -40,6 +42,14 @@ function App() {
           element={
             <Protect>
               <Upload />
+            </Protect>
+          }
+        />
+        <Route
+          path="/ai"
+          element={
+            <Protect>
+              <Aiapp />
             </Protect>
           }
         />

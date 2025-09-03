@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { FaMagic } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const UNCATEGORIZED = "Uncategorized";
 
@@ -24,6 +26,9 @@ const Upload = () => {
 
   // preview pane state
   const [previewDoc, setPreviewDoc] = useState(null); // {id,name,url,...}
+
+  const navigate = useNavigate();
+  const handleAiAppRedirect = () => navigate("/ai");
 
   const sortedFolders = useMemo(() => {
     const rest = folders
@@ -143,6 +148,14 @@ const Upload = () => {
             onClick={() => document.getElementById("file-input").click()}
           >
             Choose files
+          </button>
+          <button
+            className="btn primary"
+            onClick={handleAiAppRedirect}
+            title="Open LearnSphere AI"
+          >
+            <FaMagic style={{ marginRight: ".5rem" }} aria-hidden="true" />
+            LearnSphere AI
           </button>
           <input
             id="file-input"

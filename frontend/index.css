@@ -1497,3 +1497,233 @@ summary:focus-visible {
   height: 100%;
   border: 0;
 }
+
+/* Page */
+.aiapp-page {
+  min-height: 100vh;
+  padding: 1.5rem 1.25rem 3rem;
+  background: linear-gradient(160deg, #0f1027 0%, #1a1440 100%);
+  color: #e6e7ee;
+}
+
+/* Section header */
+.aiapp-section {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  text-align: center;
+}
+.aiapp-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, #ffffff, #dfe2f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 0.25rem 0;
+}
+.aiapp-subtitle {
+  color: #b8bbce;
+  margin: 0 auto 0.75rem;
+}
+
+/* Cards (glass) */
+.upload-card,
+.content-card {
+  max-width: 1100px;
+  margin: 0.75rem auto;
+  padding: 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.03)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Upload */
+.upload-content {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.upload-dropzone {
+  min-width: 260px;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.upload-dropzone:hover {
+  border-color: rgba(167, 139, 250, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+}
+.hidden-file-input {
+  display: none;
+}
+.upload-icon {
+  width: 22px;
+  height: 22px;
+  opacity: 0.9;
+}
+.upload-file-name {
+  margin: 0.4rem 0 0;
+  font-weight: 600;
+}
+.upload-instruction {
+  margin: 0.2rem 0 0;
+  color: #cfd1e6;
+}
+.upload-filetypes {
+  margin: 0;
+  color: #9ea2bb;
+  font-size: 0.9rem;
+}
+
+/* Buttons */
+.action-button,
+.tool-button,
+.nav-button {
+  border-radius: 10px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e6e7ee;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+.action-button:hover,
+.tool-button:hover,
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.action-button.disabled,
+.nav-button.disabled,
+.action-button:disabled,
+.nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Tools bar */
+.tools-menu {
+  max-width: 1100px;
+  margin: 0.5rem auto 0;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tool-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.tool-button.active {
+  border-color: rgba(167, 139, 250, 0.55);
+  background: rgba(167, 139, 250, 0.12);
+}
+.tool-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Loading */
+.loading-container {
+  display: grid;
+  place-items: center;
+  gap: 0.5rem;
+  color: #b8bbce;
+  padding: 0.6rem 0;
+}
+.loading-icon {
+  width: 22px;
+  height: 22px;
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Content */
+.summary-content .content-title,
+.flashcards-content .content-title {
+  font-weight: 800;
+  margin: 0.2rem 0 0.4rem;
+}
+.content-text {
+  color: #cfd1e6;
+  line-height: 1.6;
+}
+
+/* Flashcards */
+.flashcards-content {
+}
+.flashcard-card {
+  margin: 0.5rem 0;
+  padding: 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+.flashcard-question {
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+.flashcard-answer {
+  color: #e6e7ee;
+  margin: 0.35rem 0;
+}
+
+.flashcard-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+.flashcard-counter {
+  color: #b8bbce;
+}
+
+/* Empty state */
+.no-content {
+  text-align: center;
+  color: #b8bbce;
+  padding: 0.5rem 0;
+}
+.no-content-title {
+  font-weight: 700;
+  color: #e6e7ee;
+}
+
+/* Small utilities (optional) */
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.h-5 {
+  height: 1.25rem;
+}
+.w-5 {
+  width: 1.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
