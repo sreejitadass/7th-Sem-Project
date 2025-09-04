@@ -36,11 +36,11 @@ function Aiapp() {
     try {
       const flashcards = [];
       const flashcardRegex =
-        /\*\*Flashcard\s+(\d+):\*\*\s*\nQuestion:\s*(.*?)\s*\nAnswer:\s*(.*?)(?=\s*\*\*Flashcard|$)/gs;
+        /Flashcard\s+(\d+):\s*Question:\s*(.*?)\s*Answer:\s*(.*?)(?=\s*Flashcard|$)/gs;
 
       let match;
       while ((match = flashcardRegex.exec(flashcardsString)) !== null) {
-        const [, , question, answer] = match;
+        const [, number, question, answer] = match;
         if (question && answer) {
           flashcards.push({
             question: question.trim(),
@@ -174,14 +174,14 @@ function Aiapp() {
 
   const mockSummaryData = {
     summary:
-      "Temporary summary: This is a placeholder. Check logs for details.",
+      "Click 'Process Document' to upload and summarize your document. Then, use the Flashcards tool to create study aids based on the content.",
   };
   const displaySummary = summaryData || mockSummaryData;
 
   return (
     <div className="aiapp-page">
       <section className="aiapp-section">
-        <h1 className="aiapp-title">StudyBuddy AI</h1>
+        <h1 className="aiapp-title">LearnSphere AI</h1>
         <p className="aiapp-subtitle">
           Enhance your study with AI-powered tools
         </p>
