@@ -907,6 +907,34 @@ summary:focus-visible {
   height: 40%;
 }
 
+/* Dashboard affirmation banner */
+.dash-banner {
+  max-width: 1200px;
+  margin: 0.5rem auto 0.5rem;
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center horizontally */
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.03)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+  color: var(--text, #e6e7ee);
+  text-align: center; /* ensure multi-line centering */
+}
+.dash-banner .dash-banner-text {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.45;
+  font-style: italic; /* italic as requested */
+}
+
 /* Lists and buttons */
 .list {
   display: flex;

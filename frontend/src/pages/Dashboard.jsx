@@ -1,7 +1,33 @@
 // Dashboard.jsx
-import React from "react";
+import React, { useMemo } from "react";
 import { FaBookOpen, FaClock, FaBolt, FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react"; // NEW
+
+const AFFIRMATIONS = [
+  "I can do hard things.",
+  "Progress over perfection.",
+  "Focus. Breathe. Continue.",
+  "Small steps lead to big wins.",
+  "Consistency beats intensity.",
+  "My effort compounds over time.",
+  "I am capable and resilient.",
+  "I’m building my future today.",
+  "Learning is my superpower.",
+  "One page at a time.",
+];
+
+const AffirmationBanner = () => {
+  const pick = useMemo(() => {
+    const idx = Math.floor(Math.random() * AFFIRMATIONS.length);
+    return `“${AFFIRMATIONS[idx]}”`;
+  }, []);
+  return (
+    <div className="dash-banner center">
+      <span className="dash-banner-text italic">{pick}</span>
+    </div>
+  );
+};
 
 const Stat = ({ icon, label, value, hint }) => (
   <div className="dash-card stat">
@@ -22,21 +48,18 @@ const Item = ({ title, meta }) => (
 );
 
 const Dashboard = () => {
+  const { user, isSignedIn } = useUser(); // NEW
+  const first = user?.firstName || "there"; // NEW
+
   return (
     <div className="dashboard">
+      {/* Affirmation banner ABOVE heading */}
+      <AffirmationBanner />
+
       {/* Header */}
       <header className="dash-head">
         <div>
-          <h1 className="h2">Dashboard</h1>
-          <p className="sub small">
-            Welcome back—here’s the current study snapshot.
-          </p>
-        </div>
-        <div className="dash-head-actions">
-          <Link to="/upload" className="btn ghost">
-            New upload
-          </Link>
-          <button className="btn primary">Quick review</button>
+          <h3>Welcome back, {first}! Here’s your current study snapshot.</h3>
         </div>
       </header>
 
@@ -70,20 +93,6 @@ const Dashboard = () => {
 
       {/* Main grid */}
       <section className="dash-grid">
-        <article className="dash-card wide">
-          <h3 className="t3">Study progress</h3>
-          <p className="p">Weekly trend and goal completion.</p>
-          <div className="chart-placeholder">
-            <div className="bar b1" />
-            <div className="bar b2" />
-            <div className="bar b3" />
-            <div className="bar b4" />
-            <div className="bar b5" />
-            <div className="bar b6" />
-            <div className="bar b7" />
-          </div>
-        </article>
-
         <article className="dash-card">
           <h3 className="t3">Flashcards due</h3>
           <p className="p">Cards scheduled for spaced repetition today.</p>
