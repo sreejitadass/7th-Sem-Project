@@ -30,6 +30,21 @@ const Upload = () => {
   const navigate = useNavigate();
   const handleAiAppRedirect = () => navigate("/ai");
 
+  // Replace the handler
+  const handleCreateNotes = () => {
+    // No prompt, just open notes
+    navigate("/notes");
+  };
+
+  // Keep the button; no change to label is required
+  <button
+    className="btn ghost"
+    onClick={handleCreateNotes}
+    title="Create topic notes"
+  >
+    + Create notes
+  </button>;
+
   const sortedFolders = useMemo(() => {
     const rest = folders
       .filter((f) => f !== UNCATEGORIZED)
@@ -149,6 +164,16 @@ const Upload = () => {
           >
             Choose files
           </button>
+
+          {/* NEW: Create notes button */}
+          <button
+            className="btn ghost"
+            onClick={handleCreateNotes}
+            title="Create topic notes"
+          >
+            + Create notes
+          </button>
+
           <button
             className="btn primary"
             onClick={handleAiAppRedirect}
@@ -157,6 +182,7 @@ const Upload = () => {
             <FaMagic style={{ marginRight: ".5rem" }} aria-hidden="true" />
             LearnSphere AI
           </button>
+
           <input
             id="file-input"
             type="file"

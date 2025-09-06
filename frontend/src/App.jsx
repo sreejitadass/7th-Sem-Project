@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import About from "./pages/About.jsx";
 import Upload from "./pages/Upload.jsx";
 import ChatWidget from "./pages/ChatWidget.jsx";
+import Notes from "./pages/Notes.jsx";
 import Aiapp from "./components/Aiapp.jsx"; // Assuming this is in components, but path matches your structure
 import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/clerk-react";
 import { SignInPage, SignUpPage } from "./pages/AuthPages.jsx";
@@ -50,6 +51,14 @@ function App() {
           element={
             <Protect>
               <Aiapp />
+            </Protect>
+          }
+        />
+        <Route
+          path="/notes"
+          element={
+            <Protect>
+              <Notes />
             </Protect>
           }
         />

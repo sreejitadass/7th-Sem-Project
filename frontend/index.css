@@ -1727,3 +1727,231 @@ summary:focus-visible {
 .mr-2 {
   margin-right: 0.5rem;
 }
+
+/* Notes: minimal glass look */
+.notes-container {
+  min-height: 100vh;
+  padding: 2rem 1.25rem 3rem;
+  background: linear-gradient(
+    160deg,
+    var(--bg-start, #0f1027),
+    var(--bg-end, #1a1440)
+  );
+  color: var(--text, #e6e7ee);
+  position: relative;
+  isolation: isolate;
+}
+.notes-container::before {
+  content: "";
+  position: absolute;
+  inset: -15% -10% auto -10%;
+  height: 45%;
+  background: radial-gradient(
+    60% 60% at 50% 40%,
+    rgba(139, 92, 246, 0.18),
+    transparent 60%
+  );
+  filter: blur(64px);
+  z-index: -1;
+}
+
+/* Header */
+.notes-header {
+  max-width: 920px;
+  margin: 0 auto 0.75rem;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.notes-title {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  margin: 0;
+  background: linear-gradient(90deg, #fff, #dfe2f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.1px;
+}
+
+/* Content wrap */
+.notes-content {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* Form card: softer, tighter */
+.notes-form {
+  display: grid;
+  gap: 0.6rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.025)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0.85rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+/* Inputs: subtle, readable */
+.notes-input,
+.notes-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e9eaf6;
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  line-height: 1.55; /* readability sweet spot */
+}
+.notes-input::placeholder,
+.notes-textarea::placeholder {
+  color: var(--muted, #b8bbce);
+}
+.notes-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Primary and secondary actions */
+.notes-button,
+.notes-cancel-button {
+  border-radius: 10px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e6e7ee;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease,
+    transform 0.12s ease;
+}
+.notes-button:hover,
+.notes-cancel-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.notes-button:active,
+.notes-cancel-button:active {
+  transform: translateY(1px);
+}
+.plus-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* List grid */
+.notes-list {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+/* Note card: minimal borders, comfy spacing */
+.note-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  transition: border-color 0.15s ease, background 0.15s ease,
+    transform 0.12s ease;
+}
+.note-card:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+.note-content {
+  flex: 1;
+  min-width: 0;
+}
+.note-title {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-text {
+  margin: 0 0 0.35rem;
+  color: var(--muted, #b8bbce);
+  line-height: 1.6;
+  white-space: pre-wrap; /* preserve paragraphs */
+}
+.note-date {
+  color: var(--muted, #b8bbce);
+  font-size: 0.9rem;
+}
+
+/* Actions: icon-first, subtle */
+.note-actions {
+  display: flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+.edit-button,
+.delete-button {
+  border-radius: 9px;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.055);
+  color: #e6e7ee;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.12s ease;
+}
+.edit-button:hover,
+.delete-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.edit-button:active,
+.delete-button:active {
+  transform: translateY(1px);
+}
+
+/* Empty state */
+.no-notes-container {
+  text-align: center;
+  color: var(--muted, #b8bbce);
+  padding: 1rem 0;
+}
+.no-notes-text {
+  margin: 0;
+}
+
+/* Focus ring aligned with app */
+.notes-input:focus-visible,
+.notes-textarea:focus-visible,
+.notes-button:focus-visible,
+.notes-cancel-button:focus-visible,
+.edit-button:focus-visible,
+.delete-button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(167, 139, 250, 0.32);
+}
+
+/* Compact on mobile */
+@media (max-width: 640px) {
+  .notes-header {
+    max-width: 100%;
+  }
+  .notes-content {
+    max-width: 100%;
+  }
+  .note-card {
+    flex-direction: column;
+  }
+  .note-actions {
+    justify-content: flex-end;
+  }
+}
