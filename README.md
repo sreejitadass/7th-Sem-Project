@@ -56,7 +56,7 @@ npm run dev
 ```bash
 cd backend
 npm install
-node server.js
+nodemon server.js
 ```
 
 #### 3. AI Backend Setup

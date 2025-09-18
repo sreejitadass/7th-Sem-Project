@@ -935,6 +935,51 @@ summary:focus-visible {
   font-style: italic; /* italic as requested */
 }
 
+/* Add these new styles to index.css for consistency */
+
+/* Timer card */
+.timer-card {
+  text-align: center;
+}
+.timer-display {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #fff, #dfe2f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0.5rem 0;
+}
+.timer-controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* To-do add form */
+.todo-add {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.todo-add .input {
+  flex: 1;
+  min-width: 0;
+}
+.todo-item.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* No content text */
+.no-content-text {
+  color: var(--muted, #b8bbce);
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
 /* Lists and buttons */
 .list {
   display: flex;

@@ -1,49 +1,65 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { FaMagic } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3000";
 const UNCATEGORIZED = "Uncategorized";
 
-// Demo utility to create a blob URL for preview (PDFs work well).
-const toObjectURL = async (file) => {
-  // For real apps: upload to storage and use a CDN URL.
-  return URL.createObjectURL(file);
-};
+const toObjectURL = async (file) => URL.createObjectURL(file);
 
 const Upload = () => {
-  // folders: array of names; ensure UNCATEGORIZED exists
+  const { userId, isLoaded } = useAuth();
+  const { user } = useUser();
+  const displayName = user?.firstName || "Anonymous";
+
   const [folders, setFolders] = useState([UNCATEGORIZED]);
   const [activeFolder, setActiveFolder] = useState(UNCATEGORIZED);
-
-  // docs: { id, name, size, folder, url? } in-memory
   const [docs, setDocs] = useState([]);
   const [dragOver, setDragOver] = useState(false);
 
-  // folder management state
   const [newFolder, setNewFolder] = useState("");
   const [renameFolderId, setRenameFolderId] = useState("");
   const [renameFolderNew, setRenameFolderNew] = useState("");
 
-  // preview pane state
-  const [previewDoc, setPreviewDoc] = useState(null); // {id,name,url,...}
+  const [previewDoc, setPreviewDoc] = useState(null);
 
   const navigate = useNavigate();
   const handleAiAppRedirect = () => navigate("/ai");
+  const handleCreateNotes = () => navigate("/notes");
 
-  // Replace the handler
-  const handleCreateNotes = () => {
-    // No prompt, just open notes
-    navigate("/notes");
-  };
-
-  // Keep the button; no change to label is required
-  <button
-    className="btn ghost"
-    onClick={handleCreateNotes}
-    title="Create topic notes"
-  >
-    + Create notes
-  </button>;
+  useEffect(() => {
+    if (!isLoaded) return;
+    const fetchUploads = async () => {
+      try {
+        const qs = userId
+          ? `?clerkUserId=${encodeURIComponent(userId)}`
+          : `?userName=${encodeURIComponent(displayName)}`;
+        const res = await fetch(`${API_BASE}/api/uploads${qs}`);
+        if (!res.ok) return;
+        const items = await res.json();
+        const normalized = await Promise.all(
+          items.map(async (it) => ({
+            id: it._id,
+            name: it.title,
+            size: it.size || 0,
+            folder: it.folder || UNCATEGORIZED,
+            url: it.url || "",
+            type: it.type || "",
+          }))
+        );
+        setDocs(normalized);
+        const unique = new Set([
+          UNCATEGORIZED,
+          ...normalized.map((d) => d.folder),
+        ]);
+        setFolders(Array.from(unique));
+      } catch (e) {
+        console.error("Fetch uploads error:", e);
+      }
+    };
+    fetchUploads();
+  }, [isLoaded, userId, displayName]);
 
   const sortedFolders = useMemo(() => {
     const rest = folders
@@ -63,24 +79,55 @@ const Upload = () => {
     return map;
   }, [docs, sortedFolders]);
 
-  // Upload helpers
-  const ingestFiles = useCallback(async (fileList, targetFolder) => {
-    const incoming = Array.from(fileList || []);
-    if (!incoming.length) return;
-    const newDocs = [];
-    for (const f of incoming) {
-      const url = await toObjectURL(f);
-      newDocs.push({
-        id: `${f.name}-${f.size}-${crypto.randomUUID()}`,
-        name: f.name,
-        size: f.size,
-        folder: targetFolder || UNCATEGORIZED,
-        url,
-        type: f.type,
-      });
-    }
-    setDocs((prev) => [...prev, ...newDocs]);
-  }, []);
+  const ingestFiles = useCallback(
+    async (fileList, targetFolder) => {
+      const incoming = Array.from(fileList || []);
+      if (!incoming.length) return;
+
+      const newDocs = [];
+      for (const f of incoming) {
+        const url = await toObjectURL(f);
+        const draft = {
+          id: `${f.name}-${f.size}-${crypto.randomUUID()}`,
+          name: f.name,
+          size: f.size,
+          folder: targetFolder || UNCATEGORIZED,
+          url,
+          type: f.type,
+        };
+        newDocs.push(draft);
+
+        try {
+          if (!isLoaded) continue;
+          const payload = {
+            userName: displayName,
+            clerkUserId: userId || undefined,
+            title: f.name,
+            folder: draft.folder,
+            size: f.size,
+            type: f.type,
+            url: "", // keep empty since object URLs are local; replace with CDN URL when available
+            createdAtLocal: new Date().toLocaleString(),
+          };
+          const res = await fetch(`${API_BASE}/api/uploads`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (res.ok) {
+            const saved = await res.json();
+            draft.id = saved._id;
+            if (!folders.includes(draft.folder))
+              setFolders((f) => [...f, draft.folder]);
+          }
+        } catch (e) {
+          console.error("Persist upload metadata error:", e);
+        }
+      }
+      setDocs((prev) => [...prev, ...newDocs]);
+    },
+    [API_BASE, displayName, userId, isLoaded, folders]
+  );
 
   const onInput = (e) => ingestFiles(e.target.files, activeFolder);
 
@@ -101,7 +148,6 @@ const Upload = () => {
     setDragOver(false);
   };
 
-  // Folder ops
   const createFolder = () => {
     const name = newFolder.trim();
     if (!name || name === UNCATEGORIZED) return;
@@ -140,15 +186,31 @@ const Upload = () => {
     );
     if (activeFolder === name) setActiveFolder(UNCATEGORIZED);
   };
-
-  const removeDoc = (id) => {
-    setDocs((prev) => prev.filter((d) => d.id !== id));
-    if (previewDoc?.id === id) setPreviewDoc(null);
+  const removeDoc = async (docOrId) => {
+    const id =
+      typeof docOrId === "string" ? docOrId : docOrId._id || docOrId.id;
+    if (!id) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/uploads/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok || res.status === 204) {
+        setDocs((prev) => prev.filter((d) => (d._id || d.id) !== id));
+        if (previewDoc && (previewDoc._id === id || previewDoc.id === id))
+          setPreviewDoc(null);
+      } else {
+        const text = await res.text();
+        console.error("Delete failed:", res.status, text);
+        alert("Could not delete document.");
+      }
+    } catch (e) {
+      console.error("Delete request error:", e);
+      alert("Network error while deleting.");
+    }
   };
 
   return (
     <div className="upload layout">
-      {/* Header */}
       <header className="upload-head">
         <div>
           <h1 className="h2">Documents</h1>
@@ -164,8 +226,6 @@ const Upload = () => {
           >
             Choose files
           </button>
-
-          {/* NEW: Create notes button */}
           <button
             className="btn ghost"
             onClick={handleCreateNotes}
@@ -173,7 +233,6 @@ const Upload = () => {
           >
             + Create notes
           </button>
-
           <button
             className="btn primary"
             onClick={handleAiAppRedirect}
@@ -182,7 +241,6 @@ const Upload = () => {
             <FaMagic style={{ marginRight: ".5rem" }} aria-hidden="true" />
             LearnSphere AI
           </button>
-
           <input
             id="file-input"
             type="file"
@@ -193,16 +251,13 @@ const Upload = () => {
         </div>
       </header>
 
-      {/* 3-column layout: sidebar / main / preview */}
       <div className="upload-body">
-        {/* Sidebar: folders */}
         <aside className="upload-side">
           <div className="about-card">
             <div className="side-head">
               <h3 className="t3">Folders</h3>
             </div>
 
-            {/* New folder */}
             <div className="new-folder">
               <input
                 className="input"
@@ -282,7 +337,6 @@ const Upload = () => {
             </ul>
           </div>
 
-          {/* Dropzone in sidebar to target active folder */}
           <div
             role="button"
             tabIndex={0}
@@ -305,7 +359,6 @@ const Upload = () => {
           </div>
         </aside>
 
-        {/* Main: documents grid */}
         <main className="upload-main">
           <div className="about-card">
             <div className="main-head">
@@ -332,7 +385,7 @@ const Upload = () => {
                     <div className="doc-actions">
                       <button
                         className="btn ghost small"
-                        onClick={() => removeDoc(d.id)}
+                        onClick={() => removeDoc(d._id || d.id)}
                       >
                         Remove
                       </button>
@@ -344,7 +397,6 @@ const Upload = () => {
           </div>
         </main>
 
-        {/* Preview panel */}
         <aside
           className={`upload-preview ${previewDoc ? "open" : ""}`}
           aria-hidden={!previewDoc}
@@ -364,7 +416,6 @@ const Upload = () => {
               <p className="p muted">Select a document to preview.</p>
             ) : (
               <div className="iframe-wrap">
-                {/* If you store a web-accessible URL, use it directly */}
                 <iframe
                   title={previewDoc.name}
                   src={previewDoc.url}
